@@ -1,0 +1,118 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f7f6ef"><title>يومي | أدوات لكل يوم</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f7f6ef;color:#17362b;font-family:Tahoma,Arial,sans-serif;line-height:1.65}main,nav,footer{width:min(1120px,92%);margin:auto}nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;font-weight:bold}a{color:inherit}nav a{text-decoration:none}.brand{display:flex;align-items:center;gap:10px;font-size:24px}.logo{display:grid;place-items:center;width:38px;height:38px;color:#daf58d;background:#17362b;border-radius:12px}.hero{min-height:305px;border-radius:30px;background:#173a2e;color:#f7faef;padding:clamp(25px,6vw,65px);display:flex;align-items:center;justify-content:space-between;gap:15px;overflow:hidden}.hero h1{font-size:clamp(35px,6vw,67px);line-height:1.2;margin:0}.hero h1 span{display:block;color:#def69b}.hero p{margin:20px 0 0;color:#d8e6d6}.art{direction:ltr;flex:none;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;transform:rotate(-9deg);margin:0 0 0 20px}.art span{display:grid;place-items:center;width:clamp(55px,9vw,105px);aspect-ratio:1;border-radius:24%;font-size:clamp(25px,5vw,54px);color:#17362b;font-weight:bold;background:#def69b}.art span:nth-child(2){background:#fbd7aa}.art span:nth-child(3){background:#c9dced}.art span:nth-child(4){background:#e3d8f9}.toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin:30px 0 15px}.toolbar h2{margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:#fff;border:1px solid #dddfd5;border-radius:19px;padding:20px;min-height:175px;text-align:right;color:inherit;display:flex;flex-direction:column;align-items:start;gap:5px;transition:transform .15s,border-color .15s}.card:hover{border-color:#73925d;transform:translateY(-3px)}.icon{display:grid;place-items:center;background:var(--tone);width:45px;height:45px;border-radius:12px;font-size:24px;font-weight:bold;margin-bottom:4px}.card strong{font-size:19px}.card small{font-size:14px;color:#4c6257}.card .open{color:#345c38;margin-top:auto;padding-top:7px;font-weight:bold}button,input,select,textarea{font:inherit}button,select{cursor:pointer}input,select,textarea{width:100%;padding:10px 12px;background:#fff;border:1px solid #a7b8ac;border-radius:9px;color:#17362b}#search{max-width:240px}footer{padding:25px 0;margin-top:25px;border-top:1px solid #dddfd5;color:#526658;font-size:14px}dialog{color:#17362b;border:1px solid #cbd7cd;border-radius:22px;padding:24px;width:min(450px,92vw);max-height:90dvh}dialog::backdrop{background:#112c23a8}.dialog-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.dialog-head h2{margin:0}.close{background:#edf2eb;border:0;border-radius:9px;padding:2px 12px;font-size:22px;color:inherit}label{display:block;margin:12px 0}output{display:block;margin-top:15px;background:#ecf6da;padding:12px;border-radius:10px;overflow-wrap:anywhere}.action{background:#173a2e;color:white;border:0;border-radius:9px;padding:8px 14px;margin:5px 0 0 6px}.time{font-size:45px;text-align:center;font-variant-numeric:tabular-nums}textarea{resize:vertical;min-height:110px}:focus-visible{outline:3px solid #507b37;outline-offset:3px}[hidden]{display:none!important}@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:450px){.grid{grid-template-columns:1fr}.hero{min-height:250px}.art{gap:5px;margin:0}.art span{width:41px}.toolbar{align-items:start;flex-direction:column}#search{max-width:none}.card{min-height:150px}}
+</style></head><body><nav><a class="brand" href="./"><span class="logo" aria-hidden="true">✦</span> يومي</a><a href="#tools">الأدوات ↓</a></nav>
+<main><header class="hero"><div><h1>أدوات بسيطة <span>لكل يوم</span></h1><p>احسب، حوّل، ونظّم وقتك من مكان واحد.</p></div><div class="art" aria-hidden="true"><span>%</span><span>↔</span><span>⌛︎</span><span>+</span></div></header>
+<section id="tools" aria-labelledby="tools-heading"><div class="toolbar"><h2 id="tools-heading">الأدوات</h2><input type="search" id="search" aria-label="ابحث عن أداة" placeholder="ابحث عن أداة…"></div><div class="grid" id="grid"></div><p id="empty" hidden role="status">ما لقينا أداة بهذا الاسم.</p></section></main>
+<footer>يومي · كل الحسابات تتم داخل متصفحك</footer>
+<dialog aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button class="close" aria-label="إغلاق">×</button></div><div id="panel"></div></dialog>
+<script>
+const tools = [
+  ['bill','÷','تقسيم الفاتورة','احسب حصة كل شخص بالتساوي.','#def69b'],
+  ['percent','%','حاسبة النسبة','اعرف قيمة النسبة والسعر بعد الخصم.','#fbd7aa'],
+  ['units','↔','تحويل الوحدات','حوّل وحدات الطول والوزن والحرارة.','#c9dced'],
+  ['dates','▦','الفرق بين تاريخين','احسب عدد الأيام بين تاريخين.','#e3d8f9'],
+  ['words','أ','عدّاد الكلمات','احسب عدد الكلمات والأحرف في نصك.','#f5d8d9'],
+  ['timer','◷','مؤقّت التركيز','اضبط مدة جلسة الدراسة أو الشغل.','#d4ecdf']
+];
+const $ = selector => document.querySelector(selector);
+const format = new Intl.NumberFormat('ar-IQ',{maximumFractionDigits:8});
+const number = (id,label,value,min=0,step='any',max='') => `<label>${label}<input id="${id}" type="number" value="${value}" min="${min}" step="${step}" ${max ? 'max="'+max+'"' : ''}></label>`;
+const value = id => $('#'+id).valueAsNumber;
+const result = text => { $('#result').textContent = text; };
+const dialog = $('dialog');
+const panel = $('#panel');
+const grid = $('#grid');
+let interval;
+const units = {
+  'الطول': {'متر':1,'كيلومتر':1000,'سنتيمتر':0.01,'ميل':1609.344},
+  'الوزن': {'كيلوغرام':1,'غرام':0.001,'رطل':0.45359237,'أونصة':0.028349523125},
+  'الحرارة': {'مئوية':1,'فهرنهايت':1,'كلفن':1}
+};
+function convert(amount,from,to,category) {
+  if(category !== 'الحرارة') return amount * units[category][from] / units[category][to];
+  const celsius = from === 'فهرنهايت' ? (amount-32)*5/9 : from === 'كلفن' ? amount-273.15 : amount;
+  if(celsius < -273.15) return NaN;
+  return to === 'فهرنهايت' ? celsius*9/5+32 : to === 'كلفن' ? celsius+273.15 : celsius;
+}
+const options = items => items.map(item => `<option>${item}</option>`).join('');
+const select = (id,label,items=[]) => `<label>${label}<select id="${id}">${options(items)}</select></label>`;
+const cases = {
+  bill: [number('amount','مبلغ الفاتورة','25000')+number('people','عدد الأشخاص','4',1,1), () => {
+    const amount=value('amount'), people=value('people');
+    return amount>=0 && people>=1 && Number.isInteger(people) ? 'حصة الشخص الواحد '+format.format(amount/people) : 'أدخل مبلغًا صالحًا وعدد أشخاص صحيحًا.';
+  }],
+  percent: [number('amount','المبلغ الأصلي','10000')+number('rate','النسبة المئوية','15',0,'any',100), () => {
+    const amount=value('amount'), rate=value('rate');
+    const discount=amount*(rate/100);
+    return amount>=0 && rate>=0 && rate<=100 ? 'قيمة الخصم '+format.format(discount)+' · بعد الخصم '+format.format(amount-discount) : 'أدخل مبلغًا موجبًا أو صفرًا ونسبة بين ٠ و١٠٠.';
+  }],
+  units: [select('category','نوع الوحدة',Object.keys(units))+number('amount','القيمة','1','')+select('from','من')+select('to','إلى'), () => {
+    const converted=convert(value('amount'),$('#from').value,$('#to').value,$('#category').value);
+    return Number.isFinite(converted) ? format.format(converted)+' '+$('#to').value : 'أدخل قيمة صالحة للتحويل.';
+  }],
+  dates: ['<label>التاريخ الأول<input id="start" type="date"></label><label>التاريخ الثاني<input id="end" type="date"></label>', () => {
+    const days=Math.abs(value('end')-value('start'))/86400000;
+    return Number.isFinite(days) ? 'عدد الأيام '+format.format(days) : 'اختَر التاريخين لحساب الفرق.';
+  }],
+  words: ['<label>النص<textarea id="words" placeholder="اكتب أو الصق النص هنا…"></textarea></label>', () => {
+    const text=$('#words').value;
+    const words=[...new Intl.Segmenter('ar',{granularity:'word'}).segment(text)].filter(segment=>segment.isWordLike).length;
+    return 'الكلمات '+format.format(words)+' · الأحرف مع المسافات '+format.format([...text].length);
+  }]
+};
+const update = id => result(cases[id][1]());
+function setUnits(){
+  const list=Object.keys(units[$('#category').value]);
+  $('#from').innerHTML=$('#to').innerHTML=options(list);
+  $('#to').selectedIndex=1;
+}
+function mountTimer(){
+  panel.innerHTML=number('minutes','مدة الجلسة بالدقائق','25',1,1,180)+'<div class="time" dir="ltr"></div><button class="action" id="toggle">ابدأ</button><button class="action" id="reset">إعادة ضبط</button><output id="result">جاهز</output>';
+  let remaining=0, deadline=0, paused=false;
+  const paint=()=>{const seconds=Math.ceil(remaining/1000);$('.time').textContent=[Math.floor(seconds/60),seconds%60].map(n=>String(n).padStart(2,'0')).join(':');};
+  function reset(){
+    clearInterval(interval); deadline=0; paused=false;
+    remaining=$('#minutes').validity.valid && Number.isInteger(value('minutes')) ? value('minutes')*60000 : 0;
+    $('#minutes').disabled=false; $('#toggle').textContent='ابدأ'; $('#toggle').disabled=!remaining;
+    result(remaining?'جاهز':'أدخل مدة بين دقيقة و١٨٠ دقيقة.'); paint();
+  }
+  function tick(){
+    remaining=Math.max(0,deadline-Date.now()); paint();
+    if(!remaining){ clearInterval(interval);deadline=0;$('#minutes').disabled=false;$('#toggle').textContent='ابدأ من جديد';result('انتهت جلسة التركيز.'); }
+  }
+  $('#toggle').onclick=()=>{
+    if(deadline){tick();if(!deadline)return;clearInterval(interval);deadline=0;paused=true;$('#toggle').textContent='استئناف';result('متوقف مؤقتًا');return;}
+    if(!paused)remaining=value('minutes')*60000;
+    paused=false; deadline=Date.now()+remaining; $('#minutes').disabled=true;
+    $('#toggle').textContent='إيقاف مؤقت';result('الجلسة جارية');tick();interval=setInterval(tick,200);
+  };
+  $('#reset').onclick=reset;$('#minutes').oninput=reset;reset();
+}
+function openTool(tool){
+  const [id,,title]=tool;
+  $('#dialog-title').textContent=title;
+  if(id==='timer')mountTimer();
+  else{
+    panel.innerHTML=cases[id][0]+'<output id="result" aria-live="polite"></output>';
+    if(id==='units')setUnits();
+    panel.oninput=event=>{if(event.target.id==='category')setUnits();update(id);};
+    update(id);
+  }
+  dialog.showModal();
+}
+dialog.addEventListener('close',()=>{clearInterval(interval);panel.oninput=null;});
+$('.close').onclick=()=>dialog.close();
+for(const tool of tools){
+  const [id,icon,title,description,tone]=tool;
+  const card=document.createElement('button');card.type='button';card.className='card';card.style.setProperty('--tone',tone);
+  card.innerHTML=`<span class="icon" aria-hidden="true">${icon}</span><strong>${title}</strong><small>${description}</small><span class="open" aria-hidden="true">افتح الأداة ←</span>`;
+  card.onclick=()=>openTool(tool);grid.append(card);
+}
+const normalize = text => text.normalize('NFKC').replace(/[أإآ]/g,'ا').replace(/[\u064B-\u065F]/g,'').trim();
+$('#search').oninput=()=>{
+  const query=normalize($('#search').value);
+  [...grid.children].forEach((card,index)=>{card.hidden=!normalize(tools[index].slice(2,4).join(' ')).includes(query);});
+  $('#empty').hidden=Boolean(grid.querySelector('.card:not([hidden])'));
+};
+</script></body></html>
